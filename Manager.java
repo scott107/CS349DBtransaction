@@ -29,11 +29,11 @@ public class Manager {
     }
     
 	
-	public void transfer (int fromAccnt, int toAccount, int amount){
+	public void transfer (int fromAccnt, int toAccount, double amount){
 		try {
 			con.setAutoCommit(false);
-			int debitor = (getBalance(fromAccnt) - amount);
-			int creditor = (getBalance(toAccount) + amount);
+			double debitor = (getBalance(fromAccnt) - amount);
+			double creditor = (getBalance(toAccount) + amount);
 
 			String debit = SQLthings.modifyBalance(fromAccnt, debitor);
 			String credit = SQLthings.modifyBalance(toAccount, creditor);
@@ -43,8 +43,7 @@ public class Manager {
 			con.commit();
 			con.setAutoCommit(true);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.toString(), "Database update error.", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}

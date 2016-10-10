@@ -24,6 +24,7 @@ public class AccountTransactionLayout extends JFrame {
 	private JTable table;
 	private DefaultTableModel dtm;
 	
+	
 	private String[] columnNames = {"Account ID",
             "Account Name",
             "Balance"};
@@ -34,8 +35,7 @@ public class AccountTransactionLayout extends JFrame {
 			manage = new Manager();
 			refreshTable(manage.refreshTable());
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(null, e1.toString(), "Database connection failed.", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		Container contentPane = getContentPane();
@@ -112,20 +112,11 @@ public class AccountTransactionLayout extends JFrame {
 		constraints.anchor = GridBagConstraints.NORTHEAST;
 		JButton clearButton = new JButton("Clear");
 		contentPane.add(clearButton,constraints);
-		// ATTENTION!!! The action here is just another
-		//   example of how to update JTable. It is
-		//   certainly not the logic for clearing the
-		//   values in the GUI.
+
 		clearButton.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {/*
-				DefaultTableModel dtm = (DefaultTableModel) (table.getModel());
-				int row = 0;
-				int column = 2;
-				// Example of how to read/write values from/to a JTable
-				System.out.println("Old value: " + dtm.getValueAt(row, column));
-				dtm.setValueAt(new Integer(999), row, column);*/
+			public void actionPerformed(ActionEvent e) {
 				fromField.setText("");
 				toField.setText("");
 				amountField.setText("");
@@ -140,10 +131,16 @@ public class AccountTransactionLayout extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				manage.transfer(Integer.parseInt(fromField.getText()), Integer.parseInt(toField.getText()), Integer.parseInt(amountField.getText()));
+				try{
+				manage.transfer(Integer.parseInt(fromField.getText()), Integer.parseInt(toField.getText()), Double.parseDouble(amountField.getText()));
 				//table.setModel(new DefaultTableModel(newData,columnNames));
 				refreshTable(manage.refreshTable());
 				reallyrefreshthetable();
+				}
+				// catch data-type errors
+				catch(NumberFormatException err){
+					JOptionPane.showMessageDialog(null, err.toString(), "Input type error.", JOptionPane.ERROR_MESSAGE);
+				}		
 			}
 			
 		});

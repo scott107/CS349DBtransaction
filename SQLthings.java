@@ -1,6 +1,6 @@
 
 public class SQLthings {
-	public static String modifyBalance(int fromAccount, int amount){
+	public static String modifyBalance(int fromAccount, double amount){
 		return ("UPDATE ACCOUNT SET account_balance = " + amount + " WHERE account_id = " + fromAccount + ";");
 		
 	}
